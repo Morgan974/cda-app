@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trek;
+use App\Repository\LevelRepository;
 use App\Repository\TrekRepository;
 use App\Validator\TrekVaValidator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TrekController extends AbstractController{
+class LevelController extends AbstractController{
     /**
      * @var EntityManagerInterface
      */
@@ -30,25 +31,17 @@ class TrekController extends AbstractController{
     /**
      *  Retourne la liste des améliorations QVT
      *
-     * @Route("/api/treks", methods={"GET"})
+     * @Route("/api/levels", methods={"GET"})
      *
      * @param Request $request
      * @return JsonResponse
      */
-    public function listTrek(Request $request): JsonResponse
+    public function listLevel(Request $request): JsonResponse
     {
-        (bool) $isEnabled= $request->query->get("isEnabled");
-        (int) $idLevel= $request->query->get("idLevel");
+        /** @var LevelRepository $levelRepository */
+        $levelRepository = $this->entityManager->getRepository("App\Entity\Level");
 
-        dump($idLevel);
-
-        /** @var TrekRepository $trekRepository */
-        $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
-
-        $qb =  $trekRepository->listTrek(
-            $isEnabled,
-            $idLevel
-        );
+        $qb =  $levelRepository->listLevel();
 
         return $this->json($qb);
     }

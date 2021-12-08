@@ -24,7 +24,8 @@ class TrekRepository extends ServiceEntityRepository
      * @param bool $isEnabled
      */
     public function listTrek(
-        ?bool $isEnabled = null
+        ?bool $isEnabled = null,
+        ?int $idLevel = null
     )
     {
         $qb = $this->createQueryBuilder('t');
@@ -40,6 +41,14 @@ class TrekRepository extends ServiceEntityRepository
                 ->leftJoin('t.status', 'st')
                 ->andWhere('st.isEnabled = :isEnabled')
                 ->setParameter('isEnabled', $isEnabled)
+            ;
+        }
+
+        if($idLevel) {
+            $qb
+                ->leftJoin('t.level', 'lvl')
+                ->andWhere('lvl.id = :idLevel')
+                ->setParameter('idLevel', $idLevel)
             ;
         }
 

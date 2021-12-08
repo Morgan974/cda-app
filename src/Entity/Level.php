@@ -15,9 +15,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Level
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -25,6 +27,11 @@ class Level
      * @ORM\Column(type="string", length=45)
      */
     private $level;
+
+    /**
+     * @ORM\Column(type="string", length=45)
+     */
+    private $codeNum = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trek", mappedBy="level")
@@ -79,6 +86,18 @@ class Level
                 $trek->setLevel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCodeNum(): ?string
+    {
+        return $this->codeNum;
+    }
+
+    public function setCodeNum(string $codeNum): self
+    {
+        $this->codeNum = $codeNum;
 
         return $this;
     }
