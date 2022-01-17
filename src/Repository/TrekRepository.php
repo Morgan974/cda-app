@@ -26,12 +26,10 @@ class TrekRepository extends ServiceEntityRepository
      */
     public function listTrek(
         ?bool $isEnabled = null,
-        $idLevels = null
+        $idLevels = null,
+        $price = null
     )
     {
-        dump('$idLevels');
-        dump($idLevels);
-
         $qb = $this->createQueryBuilder('t');
 
         $qb
@@ -53,6 +51,13 @@ class TrekRepository extends ServiceEntityRepository
                 ->leftJoin('t.level', 'lvl')
                 ->andWhere('lvl.id IN (:idLevels)')
                 ->setParameter('idLevels', $idLevels)
+            ;
+        }
+
+        if($price) {
+            $qb
+                ->andWhere('t.price <= :price')
+                ->setParameter('price', $price)
             ;
         }
 
