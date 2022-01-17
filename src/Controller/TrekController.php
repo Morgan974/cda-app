@@ -36,14 +36,14 @@ class TrekController extends AbstractController{
     public function listTrek(Request $request): JsonResponse
     {
         (bool) $isEnabled= $request->query->get("isEnabled");
-        (int) $idLevel= $request->query->get("idLevel");
+        $idLevels = $request->query->get("idLevels");
 
         /** @var TrekRepository $trekRepository */
         $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
 
         $qb =  $trekRepository->listTrek(
             $isEnabled,
-            $idLevel
+            $idLevels
         );
 
         return $this->json($qb);

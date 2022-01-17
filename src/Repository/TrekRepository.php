@@ -6,6 +6,7 @@ use App\Entity\Trek;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use function PHPUnit\Framework\isEmpty;
 
 /**
  * @method Trek|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,9 +26,12 @@ class TrekRepository extends ServiceEntityRepository
      */
     public function listTrek(
         ?bool $isEnabled = null,
-        ?int $idLevel = null
+        $idLevels = null
     )
     {
+        dump('$idLevels');
+        dump($idLevels);
+
         $qb = $this->createQueryBuilder('t');
 
         $qb
@@ -44,13 +48,14 @@ class TrekRepository extends ServiceEntityRepository
             ;
         }
 
-        if($idLevel) {
+        if($idLevels) {
             $qb
                 ->leftJoin('t.level', 'lvl')
-                ->andWhere('lvl.id = :idLevel')
-                ->setParameter('idLevel', $idLevel)
+                ->andWhere('lvl.id IN (:idLevels)')
+                ->setParameter('idLevels', $idLevels)
             ;
         }
+
 
         $query = $qb->getQuery();
 
