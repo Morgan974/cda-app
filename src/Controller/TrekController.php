@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Trek;
 use App\Repository\TrekRepository;
 use App\Validator\TrekVaValidator;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,8 +37,6 @@ class TrekController extends AbstractController{
     {
         (bool) $isEnabled= $request->query->get("isEnabled");
         (int) $idLevel= $request->query->get("idLevel");
-
-        dump($idLevel);
 
         /** @var TrekRepository $trekRepository */
         $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");

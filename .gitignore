@@ -19,5 +19,5 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-
+migrations
 .idea
