@@ -52,14 +52,14 @@ class Trek
      * @ORM\JoinColumn(nullable=true, onDelete="set null")
      * @Groups({"trek"})
      */
-    private $status = false;
+    private $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Level", inversedBy="trek")
      * @ORM\JoinColumn(nullable=true, onDelete="set null")
      * @Groups({"trek"})
      */
-    private $level = false;
+    private $level = null;
 
     public function getId(): ?int
     {
