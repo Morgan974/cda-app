@@ -21,17 +21,19 @@ class Status
      *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
+     * @Groups({"id"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"trek"})
+     * @Groups({"status"})
      */
     private $isEnabled;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trek", mappedBy="status")
+     * @Groups({"status:trek"})
      */
     private $trek;
 

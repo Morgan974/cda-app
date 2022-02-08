@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TrekController extends AbstractController{
 
@@ -44,8 +45,9 @@ class TrekController extends AbstractController{
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function listTrek(Request $request): JsonResponse
+    public function listTrek(Request $request, NormalizerInterface $normalizer): JsonResponse
     {
         (bool) $isEnabled= $request->query->get("isEnabled");
         $idLevels = $request->query->get("idLevels");
@@ -60,7 +62,21 @@ class TrekController extends AbstractController{
             $price
         );
 
-        return $this->json($qb);
+        $groups = [
+            'id',
+            'trek',
+            'trek:status',
+            'status',
+            'trek:level',
+            'level',
+        ];
+
+        $normalize = $normalizer->normalize(
+            $qb,
+            'json',
+            ['groups' => $groups]);
+
+        return $this->json($normalize);
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Repository\LevelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 /**
@@ -20,21 +21,25 @@ class Level
      *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
+     * @Groups({"id"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Groups({"level"})
      */
     private $level;
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Groups({"level"})
      */
     private $codeNum = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trek", mappedBy="level")
+     * @Groups({"level:trek"})
      */
     private $trek;
 

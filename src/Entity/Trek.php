@@ -20,6 +20,7 @@ class Trek
      *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
+     * @Groups({"id"})
      */
     private $id;
 
@@ -50,14 +51,14 @@ class Trek
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="trek")
      * @ORM\JoinColumn(nullable=true, onDelete="set null")
-     * @Groups({"trek"})
+     * @Groups({"trek:status"})
      */
     private $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Level", inversedBy="trek")
      * @ORM\JoinColumn(nullable=true, onDelete="set null")
-     * @Groups({"trek"})
+     * @Groups({"trek:level"})
      */
     private $level = null;
 
