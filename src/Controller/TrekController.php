@@ -98,13 +98,54 @@ class TrekController extends AbstractController{
 
         /** @var LevelRepository $levelRepository */
         $levelRepository = $this->entityManager->getRepository("App\Entity\Level");
-        $level = $levelRepository->find(1);
+        $level = $levelRepository->find('f6553fb4-83cb-42ba-9828-2fc37ca16649');
 
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->entityManager->getRepository("App\Entity\Status");
-        $status = $statusRepository->find(1);
+        $status = $statusRepository->find('fef1e5e9-497f-4869-a838-5190c031c268');
 
         $trek = new trek();
+
+        $trek
+            ->setName($data['name'])
+            ->setDescription($data['description'])
+            ->setDuration($data['duration'])
+            ->setPrice($data['price'])
+            ->setStatus($status)
+            ->setLevel($level)
+        ;
+        $this->entityManager->persist($trek);
+        $this->entityManager->flush();
+
+        return  $this->json($trek->getId());
+    }
+
+    /**
+     *  Retourne la liste des améliorations QVT
+     *
+     * @Route("/api/trek/{idTrek}", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function editTrek(Request $request): JsonResponse
+    {
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+
+//        $this->trekValidator->verifyDataTrek($data);
+
+        /** @var TrekRepository $trekRepository */
+        $trekRepository = $this->entityManager->getRepository("App\Entity\trek");
+        $trek = $trekRepository->find($data['id']);
+
+        /** @var LevelRepository $levelRepository */
+        $levelRepository = $this->entityManager->getRepository("App\Entity\Level");
+        $level = $levelRepository->find($data['level']);
+
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->entityManager->getRepository("App\Entity\Status");
+        $status = $statusRepository->find('fef1e5e9-497f-4869-a838-5190c031c268');
 
         $trek
             ->setName($data['name'])

@@ -35,7 +35,7 @@ class TrekRepository extends ServiceEntityRepository
         $qb
             ->distinct('t')
             ->andWhere('t.id IS NOT NULL')
-            ->orderBy('t.name', 'ASC')
+            ->orderBy('t.price', 'ASC')
         ;
 
         if(is_bool($isEnabled)) {
@@ -60,7 +60,6 @@ class TrekRepository extends ServiceEntityRepository
                 ->setParameter('price', $price)
             ;
         }
-
 
         $query = $qb->getQuery();
 
