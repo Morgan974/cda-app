@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TrekController extends AbstractController{
@@ -22,30 +23,23 @@ class TrekController extends AbstractController{
     private $entityManager;
 
     /**
-     * @var TrekValidator
-     */
-    private $trekValidator;
-
-    /**
      * @param EntityManagerInterface $entityManager
-     * @param TrekValidator $trekValidator
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        TrekValidator $trekValidator
+        EntityManagerInterface $entityManager
     ) {
         $this->entityManager = $entityManager;
-        $this->trekValidator = $trekValidator;
     }
 
     /**
-     *  Retourne la liste des améliorations QVT
+     * Retourne la liste des treks
      *
      * @Route("/api/treks", methods={"GET"})
      *
      * @param Request $request
+     * @param NormalizerInterface $normalizer
      * @return JsonResponse
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function listTrek(Request $request, NormalizerInterface $normalizer): JsonResponse
     {
@@ -71,34 +65,52 @@ class TrekController extends AbstractController{
             'level',
         ];
 
-        $normalize = $normalizer->normalize(
+        $normalizeData = $normalizer->normalize(
             $qb,
             'json',
-            ['groups' => $groups]);
+            ['groups' => $groups]
+        );
 
-        return $this->json($normalize);
+        return $this->json($normalizeData);
     }
 
     /**
-     *  Retourne la liste des améliorations QVT
+     * Retourne un trek par rapport à son UUID
      *
      * @Route("/api/treks/{idTrek}", methods={"GET"})
      *
      * @param Request $request
+     * @param NormalizerInterface $normalizer
      * @return JsonResponse
+     * @throws ExceptionInterface
      */
-    public function getTrek(Request $request): JsonResponse
+    public function getTrek(Request $request, NormalizerInterface $normalizer): JsonResponse
     {
         /** @var TrekRepository $trekRepository */
         $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
 
         $trek = $trekRepository->find($request->attributes->get('idTrek'));
 
-        return $this->json($trek);
+        $groups = [
+            'id',
+            'trek',
+            'trek:status',
+            'status',
+            'trek:level',
+            'level',
+        ];
+
+        $normalizeData = $normalizer->normalize(
+            $trek,
+            'json',
+            ['groups' => $groups]
+        );
+
+        return $this->json($normalizeData);
     }
 
     /**
-     *  Retourne la liste des améliorations QVT
+     * Crée un trek
      *
      * @Route("/api/trek", methods={"POST"})
      *
@@ -137,7 +149,7 @@ class TrekController extends AbstractController{
     }
 
     /**
-     *  Retourne la liste des améliorations QVT
+     * éditer un trek
      *
      * @Route("/api/trek/{idTrek}", methods={"POST"})
      *

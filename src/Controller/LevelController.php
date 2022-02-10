@@ -29,7 +29,7 @@ class LevelController extends AbstractController{
     }
 
     /**
-     *  Retourne la liste des améliorations QVT
+     * Retourne la liste des levels
      *
      * @Route("/api/levels", methods={"GET"})
      *

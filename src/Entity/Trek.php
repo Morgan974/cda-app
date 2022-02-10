@@ -16,8 +16,6 @@ class Trek
 {
 
     /**
-     * @var integer
-     *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      * @Groups({"id"})

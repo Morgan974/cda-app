@@ -89,14 +89,11 @@ class AppFixtures extends Fixture
             /** @var Level $level */
             $index = array_rand($levels, $num = 1);
 
-            dump('$index');
-            dump($index);
-
             $trek = new Trek();
             $trek
                 ->setName("Test " . $i)
                 ->setDescription("Description test")
-                ->setPrice(rand(120, 12000))
+                ->setPrice(rand(120, 1200))
                 ->setDuration(rand(1, 12))
                 ->setLevel($levels[$index])
                 ->setStatus($status)

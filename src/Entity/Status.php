@@ -17,8 +17,6 @@ use Symfony\Component\Uid\Uuid;
 class Status
 {
     /**
-     * @var integer
-     *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      * @Groups({"id"})
