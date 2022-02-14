@@ -23,11 +23,18 @@ class TrekRepository extends ServiceEntityRepository
 
     /**
      * @param bool $isEnabled
+     * @param $idLevels
+     * @param float|null $price
+     * @param float|null $duration
+     * @param string|null $search
+     * @return int|mixed|string
      */
     public function listTrek(
         ?bool $isEnabled = null,
         $idLevels = null,
-        $price = null
+        float $price = null,
+        float $duration = null,
+        string $search = null
     )
     {
         $qb = $this->createQueryBuilder('t');
@@ -58,6 +65,21 @@ class TrekRepository extends ServiceEntityRepository
             $qb
                 ->andWhere('t.price <= :price')
                 ->setParameter('price', $price)
+            ;
+        }
+
+        if($duration) {
+            $qb
+                ->andWhere('t.duration <= :duration')
+                ->setParameter('duration', $duration)
+            ;
+        }
+
+        if($search) {
+            dump($search);
+            $qb
+                ->andWhere('LOWER(t.name) LIKE LOWER(:search)')
+                ->setParameter('search', '%' . $search . '%')
             ;
         }
 

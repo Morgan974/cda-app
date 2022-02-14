@@ -35,7 +35,7 @@ class Trek
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="float")
      * @Groups({"trek"})
      */
     private $duration;
@@ -100,12 +100,12 @@ class Trek
         return $this;
     }
 
-    public function getDuration(): ?string
+    public function getDuration(): ?float
     {
         return $this->duration;
     }
 
-    public function setDuration(string $duration): self
+    public function setDuration(float $duration): self
     {
         $this->duration = $duration;
 

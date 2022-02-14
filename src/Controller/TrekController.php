@@ -45,7 +45,9 @@ class TrekController extends AbstractController{
     {
         (bool) $isEnabled= $request->query->get("isEnabled");
         $idLevels = $request->query->get("idLevels");
-        $price = $request->query->get("price");
+        (float) $price = $request->query->get("price");
+        (float) $duration = $request->query->get("duration");
+        (string) $search = $request->query->get("search");
 
         /** @var TrekRepository $trekRepository */
         $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
@@ -53,7 +55,9 @@ class TrekController extends AbstractController{
         $qb =  $trekRepository->listTrek(
             $isEnabled,
             $idLevels,
-            $price
+            $price,
+            $duration,
+            $search
         );
 
         $groups = [
@@ -188,5 +192,26 @@ class TrekController extends AbstractController{
         $this->entityManager->flush();
 
         return  $this->json($trek->getId());
+    }
+
+    /**
+     * Retourne un trek par rapport à son UUID
+     *
+     * @Route("/api/trek/{idTrek}", methods={"DELETE"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function removeTrek(Request $request): JsonResponse
+    {
+        /** @var TrekRepository $trekRepository */
+        $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
+
+        $trek = $trekRepository->find($request->attributes->get('idTrek'));
+
+        $this->entityManager->remove($trek);
+        $this->entityManager->flush();
+
+        return $this->json("remove object");
     }
 }
