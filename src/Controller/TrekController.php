@@ -122,15 +122,13 @@ class TrekController extends AbstractController{
         $data = $request->getContent();
         $data = json_decode($data, true);
 
-//        $this->trekValidator->verifyDataTrek($data);
-
         /** @var LevelRepository $levelRepository */
         $levelRepository = $this->entityManager->getRepository("App\Entity\Level");
-        $level = $levelRepository->find('f6553fb4-83cb-42ba-9828-2fc37ca16649');
+        $level = $levelRepository->find($data['level']);
 
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->entityManager->getRepository("App\Entity\Status");
-        $status = $statusRepository->find('fef1e5e9-497f-4869-a838-5190c031c268');
+        $statut = $statusRepository->findOneBy(['isEnabled' => 'true']);
 
         $trek = new trek();
 
@@ -139,9 +137,11 @@ class TrekController extends AbstractController{
             ->setDescription($data['description'])
             ->setDuration($data['duration'])
             ->setPrice($data['price'])
-            ->setStatus($status)
+            ->setDistance($data['distance'])
+            ->setStatus($statut)
             ->setLevel($level)
         ;
+
         $this->entityManager->persist($trek);
         $this->entityManager->flush();
 
@@ -161,11 +161,11 @@ class TrekController extends AbstractController{
         $data = $request->getContent();
         $data = json_decode($data, true);
 
-//        $this->trekValidator->verifyDataTrek($data);
-
         /** @var TrekRepository $trekRepository */
-        $trekRepository = $this->entityManager->getRepository("App\Entity\trek");
-        $trek = $trekRepository->find($data['id']);
+        $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
+        $trek = $trekRepository->find($request->attributes->get('idTrek'));
+
+        dump($trek);
 
         /** @var LevelRepository $levelRepository */
         $levelRepository = $this->entityManager->getRepository("App\Entity\Level");
@@ -173,14 +173,15 @@ class TrekController extends AbstractController{
 
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->entityManager->getRepository("App\Entity\Status");
-        $status = $statusRepository->find('fef1e5e9-497f-4869-a838-5190c031c268');
+        $statut = $statusRepository->findOneBy(['isEnabled' => 'true']);
 
         $trek
             ->setName($data['name'])
             ->setDescription($data['description'])
             ->setDuration($data['duration'])
             ->setPrice($data['price'])
-            ->setStatus($status)
+            ->setDistance($data['distance'])
+            ->setStatus($statut)
             ->setLevel($level)
         ;
         $this->entityManager->persist($trek);

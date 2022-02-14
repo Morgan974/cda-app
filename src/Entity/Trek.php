@@ -47,6 +47,12 @@ class Trek
     private $price;
 
     /**
+     * @ORM\Column(type="float")
+     * @Groups({"trek"})
+     */
+    private $distance;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="trek")
      * @ORM\JoinColumn(nullable=true, onDelete="set null")
      * @Groups({"trek:status"})
@@ -138,6 +144,18 @@ class Trek
     public function setLevel(?Level $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getDistance(): ?float
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(float $distance): self
+    {
+        $this->distance = $distance;
 
         return $this;
     }
