@@ -1,0 +1,18 @@
+[
+    {
+        "level" : "marcheur débutant",
+        "codeNum" : "LVL-0001"
+    },
+    {
+        "level" : "marcheur occasionnel",
+        "codeNum" : "LVL-0002"
+    },
+    {
+        "level" : "marcheur confirmé",
+        "codeNum" : "LVL-0003"
+    },
+    {
+        "level" : "trek sportif",
+        "codeNum" : "LVL-0004"
+    }
+]
