@@ -6309,16 +6309,16 @@
         },
         {
             "name": "symfony/runtime",
-            "version": "v5.4.0",
+            "version": "v5.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/runtime.git",
-                "reference": "1fb6017efeb00b9f52ad80986cb7e611eb0d5393"
+                "reference": "06fdd940ebf240ed7d9c9832cd97bf3133847316"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/runtime/zipball/1fb6017efeb00b9f52ad80986cb7e611eb0d5393",
-                "reference": "1fb6017efeb00b9f52ad80986cb7e611eb0d5393",
+                "url": "https://api.github.com/repos/symfony/runtime/zipball/06fdd940ebf240ed7d9c9832cd97bf3133847316",
+                "reference": "06fdd940ebf240ed7d9c9832cd97bf3133847316",
                 "shasum": ""
             },
             "require": {
@@ -6331,10 +6331,10 @@
             },
             "require-dev": {
                 "composer/composer": "^1.0.2|^2.0",
-                "symfony/console": "^5.4|^6.0",
+                "symfony/console": "^4.4.30|^5.3.7|^6.0",
                 "symfony/dotenv": "^5.1|^6.0",
-                "symfony/http-foundation": "^4.4|^5.0|^6.0",
-                "symfony/http-kernel": "^4.4|^5.0|^6.0"
+                "symfony/http-foundation": "^4.4.30|^5.3.7|^6.0",
+                "symfony/http-kernel": "^4.4.30|^5.3.7|^6.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -6366,7 +6366,7 @@
             "description": "Enables decoupling PHP applications from global state",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/runtime/tree/v5.4.0"
+                "source": "https://github.com/symfony/runtime/tree/v5.4.5"
             },
             "funding": [
                 {
@@ -6382,7 +6382,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-07T13:24:42+00:00"
+            "time": "2022-02-15T13:38:03+00:00"
         },
         {
             "name": "symfony/security-bundle",
@@ -10722,5 +10722,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
