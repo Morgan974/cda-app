@@ -67,6 +67,8 @@ class TrekController extends AbstractController{
             'status',
             'trek:level',
             'level',
+            'trek:book',
+            'book'
         ];
 
         $normalizeData = $normalizer->normalize(
@@ -149,7 +151,7 @@ class TrekController extends AbstractController{
         $this->entityManager->persist($trek);
         $this->entityManager->flush();
 
-        return  $this->json($trek->getId());
+        return  $this->json($trek);
     }
 
     /**
@@ -168,8 +170,6 @@ class TrekController extends AbstractController{
         /** @var TrekRepository $trekRepository */
         $trekRepository = $this->entityManager->getRepository("App\Entity\Trek");
         $trek = $trekRepository->find($request->attributes->get('idTrek'));
-
-        dump($trek);
 
         /** @var LevelRepository $levelRepository */
         $levelRepository = $this->entityManager->getRepository("App\Entity\Level");
@@ -191,7 +191,7 @@ class TrekController extends AbstractController{
         $this->entityManager->persist($trek);
         $this->entityManager->flush();
 
-        return  $this->json($trek->getId());
+        return  $this->json($trek);
     }
 
     /**

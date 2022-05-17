@@ -2,16 +2,31 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Book;
 use App\Entity\Level;
+use App\Entity\Reservation;
 use App\Entity\Status;
 use App\Entity\Trek;
+use App\Entity\User;
 use App\Repository\LevelRepository;
 use App\Repository\StatusRepository;
+use App\Repository\TrekRepository;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+
+    private $encoder;
+
+    public function __construct(UserPasswordHasherInterface $encoder)
+    {
+        $this->encoder =$encoder;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $this->loadLevels($manager);
@@ -20,6 +35,10 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         $this->loadTreks($manager);
+
+        $manager->flush();
+
+        $this->loadUsers($manager);
 
         $manager->flush();
     }
@@ -78,6 +97,28 @@ class AppFixtures extends Fixture
                 ->setStatus($status)
             ;
             $manager->persist($trek);
+        }
+    }
+
+    private function loadUsers(ObjectManager $manager)
+    {
+        $faker = Factory::create("fr_FR");
+
+        for($i = 0; $i < 50; $i++) {
+            $user = new User();
+
+            $firstname = $faker->firstname();
+            $lastname = $faker->lastName;
+            $email = strtolower($firstname) . '.' . strtolower($lastname) . '@gmail.com';
+            $hash = $this->encoder->hashPassword($user, "password");
+
+            $user
+                ->setFirstname($firstname)
+                ->setLastname($lastname)
+                ->setEmail(str_replace(' ', '', $email))
+                ->setPassword($hash)
+            ;
+            $manager->persist($user);
         }
     }
 }

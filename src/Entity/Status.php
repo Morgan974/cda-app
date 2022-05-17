@@ -13,6 +13,8 @@ use Symfony\Component\Uid\Uuid;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=StatusRepository::class)
+ * @ORM\Table(name="`status`")
+ *
  */
 class Status
 {

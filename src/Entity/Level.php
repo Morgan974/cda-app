@@ -13,6 +13,7 @@ use Symfony\Component\Uid\Uuid;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=LevelRepository::class)
+ * @ORM\Table(name="`level`")
  */
 class Level
 {

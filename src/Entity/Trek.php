@@ -4,17 +4,24 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TrekRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     denormalizationContext={
+ *          "disable_type_enforcement"=true
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=TrekRepository::class)
  */
 class Trek
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
@@ -24,31 +31,43 @@ class Trek
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"trek"})
+     * @Groups({"trek", "trek:name"})
+     * @Assert\NotBlank(message = "Le nom du trek est obligatoire !")
+     * @Assert\Length(
+     *     min=3, minMessage="Le nom du trek doit faire entre 3 et 255 charactères !",
+     *     max=255, maxMessage="Le nom du trek  doit faire entre 3 et 255 charactères !"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"trek"})
+     * @Groups({"trek", "trek:description"})
+     * @Assert\NotBlank(message = "La description du trek est obligatoire !")
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"trek"})
+     * @Groups({"trek", "trek:duration"})
+     * @Assert\NotBlank(message = "La durée du trek est obligatoire !")
+     * @Assert\Type(type="numeric", message="La durée du trek doit être au format numérique !")
      */
     private $duration;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"trek"})
+     * @Assert\NotBlank(message = "Le prix du trek est obligatoire !")
+     * @Assert\Type(type="numeric", message="Le prix du trek doit être au format numérique !")
      */
     private $price;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"trek"})
+     * @Assert\NotBlank(message = "La distance du trek est obligatoire !")
+     * @Assert\Type(type="numeric", message="La distance du trek doit être au format numérique !")
      */
     private $distance;
 
@@ -66,9 +85,16 @@ class Trek
      */
     private $level = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="trek", orphanRemoval=true)
+     * @Groups({"trek:book"})
+     */
+    private $books;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
+        $this->books = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -105,7 +131,7 @@ class Trek
         return $this->duration;
     }
 
-    public function setDuration(float $duration): self
+    public function setDuration($duration): self
     {
         $this->duration = $duration;
 
@@ -117,7 +143,7 @@ class Trek
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice($price): self
     {
         $this->price = $price;
 
@@ -153,9 +179,39 @@ class Trek
         return $this->distance;
     }
 
-    public function setDistance(float $distance): self
+    public function setDistance($distance): self
     {
         $this->distance = $distance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setTrek($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getTrek() === $this) {
+                $book->setTrek(null);
+            }
+        }
 
         return $this;
     }
