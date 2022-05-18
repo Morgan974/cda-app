@@ -116,7 +116,7 @@ class TrekController extends AbstractController{
     }
 
     /**
-     * Crée un trek
+     * Créer un trek
      *
      * @Route("/api/trek", methods={"POST"})
      *
