@@ -37,6 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     min=3, minMessage="Le prénom doit faire entre 3 et 255 charactères !",
      *     max=255, maxMessage="Le prénom doit faire entre 3 et 255 charactères !"
      * )
+     * @Groups({"user", "user:firstname"})
      */
     private $firstname;
 
@@ -47,6 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     min=3, minMessage="Le nom doit faire entre 3 et 255 charactères !",
      *     max=255, maxMessage="Le nom doit faire entre 3 et 255 charactères !"
      * )
+     * @Groups({"user", "user:lastname"})
      */
     private $lastname;
 

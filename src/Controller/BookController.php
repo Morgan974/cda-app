@@ -68,7 +68,8 @@ class BookController extends AbstractController{
             'trek:name',
             'trek:description',
             'book:users',
-
+            'user:firstname',
+            'user:lastname'
         ];
 
         $normalizeData = $normalizer->normalize(
@@ -108,6 +109,39 @@ class BookController extends AbstractController{
         $book
             ->setDate(new DateTime($data['date']))
             ->setTrek($trek)
+            ->addUser($user)
+        ;
+
+        $this->entityManager->persist($book);
+        $this->entityManager->flush();
+
+        return  $this->json($book);
+    }
+
+    /**
+     * Créer une reservation
+     *
+     * @Route("/api/books/{idBook}", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function editBook(Request $request): JsonResponse
+    {
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+
+        /** @var BookRepository $bookRepository */
+        $bookRepository = $this->entityManager->getRepository("App\Entity\Book");
+        $book = $bookRepository->find($request->attributes->get('idBook'));
+
+        /**
+         * @var User $user
+         */
+        $user = $this->security->getUser();
+
+        $book
             ->addUser($user)
         ;
 
