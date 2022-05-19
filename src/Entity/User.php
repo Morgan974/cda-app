@@ -73,9 +73,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="users")
+     */
+    private $books;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
+        $this->books = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -184,6 +190,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            $book->removeUser($this);
+        }
 
         return $this;
     }

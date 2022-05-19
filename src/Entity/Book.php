@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
@@ -32,13 +34,18 @@ class Book
 
     /**
      * @ORM\ManyToOne(targetEntity=Trek::class, inversedBy="books")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $trek;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="books")
+     */
+    private $users;
 
     public function __construct()
     {
         $this->id = Uuid::v4();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -66,6 +73,30 @@ class Book
     public function setTrek(?Trek $trek): self
     {
         $this->trek = $trek;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|user[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }
