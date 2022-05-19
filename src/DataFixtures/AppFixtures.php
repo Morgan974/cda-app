@@ -2,16 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Book;
 use App\Entity\Level;
-use App\Entity\Reservation;
 use App\Entity\Status;
 use App\Entity\Trek;
 use App\Entity\User;
 use App\Repository\LevelRepository;
 use App\Repository\StatusRepository;
-use App\Repository\TrekRepository;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -104,7 +100,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create("fr_FR");
 
-        for($i = 0; $i < 50; $i++) {
+        for($i = 0; $i < 10; $i++) {
             $user = new User();
 
             $firstname = $faker->firstname();

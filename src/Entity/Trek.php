@@ -87,7 +87,6 @@ class Trek
 
     /**
      * @ORM\OneToMany(targetEntity=Book::class, mappedBy="trek", orphanRemoval=true)
-     * @Groups({"trek:book"})
      */
     private $books;
 
