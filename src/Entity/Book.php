@@ -29,16 +29,19 @@ class Book
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"book"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trek::class, inversedBy="books")
+     * @Groups({"book:trek"})
      */
     private $trek;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="books")
+     * @Groups({"book:users"})
      */
     private $users;
 

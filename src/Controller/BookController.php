@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Entity\Trek;
 use App\Entity\User;
+use App\Repository\BookRepository;
 use App\Repository\LevelRepository;
 use App\Repository\StatusRepository;
 use App\Repository\TrekRepository;
@@ -41,6 +42,42 @@ class BookController extends AbstractController{
     ) {
         $this->entityManager = $entityManager;
         $this->security = $security;
+    }
+
+    /**
+     * Retourne la liste des treks
+     *
+     * @Route("/api/books", methods={"GET"})
+     *
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    public function listBook(Request $request, NormalizerInterface $normalizer): JsonResponse
+    {
+        /** @var BookRepository $bookRepository */
+        $bookRepository = $this->entityManager->getRepository("App\Entity\Book");
+
+        $qb =  $bookRepository->listBook();
+
+        $groups = [
+            'id',
+            'book',
+            'book:trek',
+            'trek:name',
+            'trek:description',
+            'book:users',
+
+        ];
+
+        $normalizeData = $normalizer->normalize(
+            $qb,
+            'json',
+            ['groups' => $groups]
+        );
+
+        return $this->json($normalizeData);
     }
 
     /**
